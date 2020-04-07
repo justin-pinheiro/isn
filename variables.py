@@ -1,4 +1,4 @@
-﻿import pygame
+import pygame
 
     #icone du jeu
 icone = pygame.image.load("img/hero/standR/standR1.png")
@@ -33,8 +33,11 @@ arene_hauteur = ecran_hauteur
 arene_largeur = 3*ecran_hauteur
 
     #fond d'ecran
-fond_image = pygame.image.load("herobackground/decor/neonsky.png").convert()
-collines_image = pygame.image.load("img/decor/fond2.png")
+fond_image = pygame.image.load("herobackground/decor/neonsky.png").convert_alpha()
+collines_image = pygame.image.load("herobackground/decor/Plateforme.png").convert_alpha()
+building1_image = pygame.image.load("herobackground/decor/building1.png").convert_alpha()
+building2_image = pygame.image.load("herobackground/decor/building2.png").convert_alpha()
+building3_image = pygame.image.load("herobackground/decor/building3.png").convert_alpha()
 fond_x = 0 - ecran_largeur
 fond_vitesse = 8
 
