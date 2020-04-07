@@ -2,7 +2,6 @@
 import pygame
 import random
 import math
-#test pour voir
 from variables import *
 
 pygame.init()
@@ -201,7 +200,7 @@ class Projectile:
         if(collision(self.x,self.y,self.largeur,self.hauteur)):
             game_over()
 
-
+#1
 
 class Plateforme:
 
@@ -503,6 +502,8 @@ while run:
                 #si joueur touche le bord
                 else:
                     joueur.x = ecran_largeur - joueur.largeur
+            
+        #2
 
         #pas de mouvement
         else:
@@ -626,6 +627,7 @@ while run:
             if event.type == pygame.QUIT:
                 run = False
 
+    #3
 
     #actualisation de l'écran
     pygame.display.update()
