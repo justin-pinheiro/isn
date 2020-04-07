@@ -1,4 +1,4 @@
-﻿#initialisation de pygame
+#initialisation de pygame
 import pygame
 import random
 import math
@@ -291,7 +291,9 @@ def a_gauche_de_zone_limite():
 def joueur_avance_vers(direction):
     if (direction == "droite"):
         collines.x -= collines.vitesse
-        fond.x -= fond.vitesse
+        building1.x -= building1.vitesse
+        building2.x -= building2.vitesse
+        building3.x -= building3.vitesse
         for i in range (len(listeEnnemis)):
             listeEnnemis[i].x -= joueur.vitesse_x
         for i in range (len(listeProjectiles)):
@@ -299,7 +301,9 @@ def joueur_avance_vers(direction):
 
     elif (direction == "gauche"):
         collines.x += collines.vitesse
-        fond.x += fond.vitesse
+        building1.x += building1.vitesse
+        building2.x += building2.vitesse
+        building3.x += building3.vitesse
         for i in range (len(listeEnnemis)):
             listeEnnemis[i].x += joueur.vitesse_x
         for i in range (len(listeProjectiles)):
@@ -307,18 +311,22 @@ def joueur_avance_vers(direction):
 
 def camera_avance_vers(direction):
     if (direction == "droite"):
-        fond.x += fond.vitesse
         joueur.x += joueur_vitesse_x/2
         collines.x += collines.vitesse/2
+        building1.x += building1.vitesse/2
+        building2.x += building2.vitesse/2
+        building3.x += building3.vitesse/2
         for i in range (len(listeEnnemis)):
             listeEnnemis[i].x += joueur.vitesse_x/2
         for i in range (len(listeProjectiles)):
             listeProjectiles[i].x += joueur.vitesse_x/2
 
     elif (direction == "gauche"):
-        fond.x -= fond.vitesse
         joueur.x -= joueur_vitesse_x/2
         collines.x -= collines.vitesse/2
+        building1.x -= building1.vitesse/2
+        building2.x -= building2.vitesse/2
+        building3.x -= building3.vitesse/2
         for i in range (len(listeEnnemis)):
             listeEnnemis[i].x -= joueur.vitesse_x/2
         for i in range (len(listeProjectiles)):
@@ -355,8 +363,11 @@ pygame.display.set_caption("Game")
 
 joueur = Joueur()
 p1 = Plateforme(ecran_largeur, p_hauteur, ecran_hauteur - p_hauteur, 0)
-collines = Decor(0 - ecran_largeur, 25, pygame.image.load("img/decor/fond2.png"))
-fond = Decor(0 - ecran_largeur, 10, pygame.image.load("img/decor/fond.png").convert())
+collines = Decor(0 - ecran_largeur, 25, collines_image)
+building1 = Decor(0 - ecran_largeur, 15, building1_image)
+building2 = Decor(0 - 100, 4, building2_image)
+building3 = Decor(0 - 100, 1, building3_image)
+fond = Decor(0, 5, fond_image)
 listeEnnemis = []
 listeProjectiles = []
 
@@ -563,12 +574,12 @@ while run:
 
 
 
-
-
-
                     #AFFICHAGE & ACTUALISATION
 
         fond.actualiser()
+        building3.actualiser()
+        building2.actualiser()
+        building1.actualiser()
         collines.actualiser()
 
         #pygame.draw.rect(ecran, (0,200,0), (zone_libre_x, 0, zone_libre_taille, ecran_hauteur))
@@ -627,3 +638,4 @@ while run:
     pygame.display.update()
 
 pygame.quit()
+
