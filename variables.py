@@ -33,7 +33,7 @@ arene_hauteur = ecran_hauteur
 arene_largeur = 3*ecran_hauteur
 
     #fond d'ecran
-fond_image = pygame.image.load("img/decor/fond.png").convert()
+fond_image = pygame.image.load("hero/background/neonsky.png").convert()
 collines_image = pygame.image.load("img/decor/fond2.png")
 fond_x = 0 - ecran_largeur
 fond_vitesse = 8
