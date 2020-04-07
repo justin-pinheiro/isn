@@ -6,8 +6,8 @@ pygame.display.set_icon(icone)
 
 ennemi_image = pygame.image.load("img/enemy/stand/stand1.png")
 ennemi_vitesse = 20
-ennemi_hauteur = 80
-ennemi_longueur = 48
+ennemi_hauteur = 130
+ennemi_longueur = 78
 
 
     #plateforme
@@ -43,15 +43,13 @@ fond_vitesse = 8
 
     #zone libre
 dans_zone_libre = True
-zone_libre_taille = 300
+zone_libre_taille = 200
 zone_libre_x = ecran_largeur/2 - zone_libre_taille/2
 
     #joueur
 joueur_image = pygame.image.load("img/hero/standR/standR1.png")
-joueur_largeur_courir = 100
-joueur_largeur_debout = 50
-joueur_largeur_coup = 70
-joueur_hauteur = 80
+joueur_largeur = 362
+joueur_hauteur = 135
 joueur_tombe = True
 coup = False
 joueur_vitesse_x = 30
@@ -59,46 +57,50 @@ Y_MIN = 5
 Y_MAX = 70
 joueur_vitesse_y = Y_MIN
 joueur_y = 200
-joueur_x = ecran_milieu
+joueur_x = ecran_milieu - joueur_largeur/2
 joueur_baisse = False
+
+coup = False
 
 
     #images
-image_stand = [pygame.image.load("img/hero/standR/standR1.png"),
-pygame.image.load("img/hero/standR/standR2.png"),
-pygame.image.load("img/hero/standR/standR3.png"),
-pygame.image.load("img/hero/standR/standR4.png"),
-pygame.image.load("img/hero/standR/standR5.png")]
-image_standL = [pygame.image.load("img/hero/standL/standL1.png"),
-pygame.image.load("img/hero/standL/standL2.png"),
-pygame.image.load("img/hero/standL/standL3.png"),
-pygame.image.load("img/hero/standL/standL4.png"),
-pygame.image.load("img/hero/standL/standL5.png")]
+image_stand = [pygame.image.load("herobackground/hero/stand/standR.png").convert_alpha()]
+image_standL = [pygame.image.load("herobackground/hero/stand/standL.png").convert_alpha()]
 position_image_stand = 0
-image_droite = [pygame.image.load("img/hero/walkR/walkR1.png"),
-pygame.image.load("img/hero/walkR/walkR2.png"),
-pygame.image.load("img/hero/walkR/walkR3.png"),
-pygame.image.load("img/hero/walkR/walkR4.png"),
-pygame.image.load("img/hero/walkR/walkR5.png"),
-pygame.image.load("img/hero/walkR/walkR6.png")]
+image_droite = [pygame.image.load("herobackground/hero/runR/runR1.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runR/runR2.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runR/runR3.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runR/runR4.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runR/runR5.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runR/runR6.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runR/runR7.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runR/runR8.png").convert_alpha()]
 position_image_droite = 0
-image_gauche = [pygame.image.load("img/hero/walkR/walkR1.png"),
-pygame.image.load("img/hero/walkR/walkR2.png"),
-pygame.image.load("img/hero/walkR/walkR3.png"),
-pygame.image.load("img/hero/walkR/walkR4.png"),
-pygame.image.load("img/hero/walkR/walkR5.png"),
-pygame.image.load("img/hero/walkR/walkR6.png")]
+image_gauche = [pygame.image.load("herobackground/hero/runL/runL1.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runL/runL2.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runL/runL3.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runL/runL4.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runL/runL5.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runL/runL6.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runL/runL7.png").convert_alpha(),
+pygame.image.load("herobackground/hero/runL/runL8.png").convert_alpha()]
 position_image_gauche = 0
-image_coup = [pygame.image.load("img/hero/punchL/punchL1.png"),
-pygame.image.load("img/hero/punchL/punchL2.png"),
-pygame.image.load("img/hero/punchL/punchL3.png"),
-pygame.image.load("img/hero/punchL/punchL4.png"),
-pygame.image.load("img/hero/punchL/punchL5.png")]
-image_coupR = [pygame.image.load("img/hero/punchR/punchR1.png"),
-pygame.image.load("img/hero/punchR/punchR2.png"),
-pygame.image.load("img/hero/punchR/punchR3.png"),
-pygame.image.load("img/hero/punchR/punchR4.png"),
-pygame.image.load("img/hero/punchR/punchR5.png")]
+image_coup = [pygame.image.load("herobackground/hero/hitL/hitL1.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitL/hitL2.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitL/hitL3.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitL/hitL4.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitL/hitL5.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitL/hitL6.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitL/hitL7.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitL/hitL8.png").convert_alpha()]
+image_coupR = [pygame.image.load("herobackground/hero/hitR/hitR1.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitR/hitR2.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitR/hitR3.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitR/hitR4.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitR/hitR5.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitR/hitR6.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitR/hitR7.png").convert_alpha(),
+pygame.image.load("herobackground/hero/hitR/hitR8.png").convert_alpha()]
 position_image_coup = 0
 
 perdu = False
