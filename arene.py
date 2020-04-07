@@ -30,11 +30,15 @@ class Joueur:
     def __init__(self):
         self.x = ecran_milieu
         self.y = joueur_y
+
         self.hauteur = joueur_hauteur
-        self.largeur = joueur_largeur_debout
+        self.largeur = joueur_largeur
 
         self.vitesse_y = joueur_vitesse_y
         self.vitesse_x = 30
+
+        self.x_mort = self.x + 120
+        self.largeur_mort = joueur_largeur/3
 
         self.saut_pas = 10
         self.saut = False
@@ -48,19 +52,22 @@ class Joueur:
         #affichage du joueur
         pygame.time.wait(50)
 
-        pygame.draw.rect(ecran, (0,0,255), (self.x, self.y, self.largeur, self.hauteur))
+        self.x_mort = self.x + 120
+        self.largeur_mort = joueur_largeur/3
+
+        #pygame.draw.rect(ecran, (0,0,255), (self.x, self.y, self.largeur, self.hauteur))
 
         ecran.blit(joueur_image, (self.x, self.y))
 
         self.punch_y = self.y
         self.punch_largeur = 100
-        self.punch_hauteur = 100
+        self.punch_hauteur = 135
 
         if (self.left):
-            self.punch_x = self.x - 100
+            self.punch_x = self.x
             self.punch_hitbox = pygame.Rect(self.punch_x , self.punch_y , self.punch_largeur, self.punch_hauteur)
         if (self.right):
-            self.punch_x = self.x + self.largeur
+            self.punch_x = self.x + self.largeur - 100
             self.punch_hitbox = pygame.Rect(self.punch_x , self.punch_y, self.punch_largeur,self.punch_hauteur)
 
         if(joueur_tombe):
@@ -182,7 +189,7 @@ class Ennemi:
 class Projectile:
     def __init__(self, x, direction):
         self.x = x
-        self.y = p1.y - random.randint(55,80)
+        self.y = p1.y - random.randint(80,110)
         self.largeur = 20
         self.hauteur = 5
         self.direction = direction
@@ -213,7 +220,6 @@ class Plateforme:
         self.hitbox = pygame.Rect(self.x , self.y - joueur.vitesse_y , self.longueur , self.hauteur)
 
     def actualiser(self):
-        pygame.draw.rect(ecran, (50,0,50), (self.hitbox_apparence))
 
         #collision haut de la plateforme
         if(collision(self.x,self.y - joueur.vitesse_y ,self.longueur,self.hauteur)):
@@ -256,7 +262,7 @@ def nouveau_round():
         round_liste = [a,d,d,a,d,a,d,d,d,d,a,d,a,d,s]
         ennemis_vivants = [a,d,d,a,d,a,d,d,d,d,a,d,a,d,s]
     if round == 5:
-        round_liste = [a,d,d,a,s,a,d,d,d,d,d,s,a,d,s]
+        round_liste = [a,s,d,a,s,a,d,d,s,a,d,s,a,d,s]
         ennemis_vivants = [a,d,d,a,s,a,d,d,d,d,d,s,a,d,s]
 
 def creer_ennemi():
@@ -273,7 +279,7 @@ def creer_ennemi():
 
 
 def collision(x, y, longueur, hauteur):
-    if (joueur.y <= y + hauteur and joueur.y + joueur.hauteur >= y and joueur.x + joueur.largeur >= x and joueur.x <= x + longueur ): return True
+    if (joueur.y <= y + hauteur and joueur.y + joueur.hauteur >= y and joueur.x_mort + joueur.largeur_mort >= x and joueur.x_mort <= x + longueur ): return True
     else: return False
 
 def punch_collision(x, y, longueur, hauteur):
@@ -281,11 +287,11 @@ def punch_collision(x, y, longueur, hauteur):
     else: return False
 
 def a_droite_de_zone_limite():
-    if (joueur.x > zone_libre_x + zone_libre_taille): return True
+    if (joueur.x_mort > zone_libre_x + zone_libre_taille): return True
     else: return False
 
 def a_gauche_de_zone_limite():
-    if (joueur.x + joueur.largeur < zone_libre_x): return True
+    if (joueur.x_mort + joueur.largeur_mort < zone_libre_x): return True
     else: return False
 
 def joueur_avance_vers(direction):
@@ -362,12 +368,12 @@ def game_over():
 pygame.display.set_caption("Game")
 
 joueur = Joueur()
-p1 = Plateforme(ecran_largeur, p_hauteur, ecran_hauteur - p_hauteur, 0)
+p1 = Plateforme(ecran_largeur, 120, ecran_hauteur - 100, 0)
 collines = Decor(0 - ecran_largeur, 25, collines_image)
 building1 = Decor(0 - ecran_largeur, 15, building1_image)
 building2 = Decor(0 - 100, 4, building2_image)
 building3 = Decor(0 - 100, 1, building3_image)
-fond = Decor(0, 5, fond_image)
+fond = Decor(0, 0, fond_image)
 listeEnnemis = []
 listeProjectiles = []
 
@@ -378,6 +384,7 @@ listeProjectiles = []
             #BOUCLE
 while run:
 
+    pygame.time.delay(1)
 
 
 
@@ -445,6 +452,12 @@ while run:
                         joueur.y = 200
                         joueur.x = ecran_milieu
 
+                        collines.x = 0 - ecran_largeur
+                        building1.x = 0 - ecran_largeur
+                        building2.x = 0 - 100
+                        building3.x = 0 - 100
+                        fond.x = 0
+
         pygame.display.update()
 
 
@@ -455,12 +468,14 @@ while run:
 
 
 
+
+
         #ANIMATION DU JOUEUR
 
         keys = pygame.key.get_pressed()
 
         #mouvement gauche
-        if (keys[pygame.K_LEFT] and not joueur_baisse):
+        if (keys[pygame.K_LEFT] and not joueur_baisse and not coup):
 
                 #images du joueur
             #joueur.largeur = joueur_largeur_courir
@@ -487,7 +502,7 @@ while run:
                     joueur.x = 0
 
         #mouvement droite
-        elif (keys[pygame.K_RIGHT] and not joueur_baisse):
+        elif (keys[pygame.K_RIGHT] and not joueur_baisse and not coup):
                 #images du joueur
             #joueur.largeur = joueur_largeur_courir
             joueur_image = image_droite[position_image_droite]
@@ -517,21 +532,20 @@ while run:
             #images du joueur
             #joueur.largeur = joueur_largeur_debout
             if(joueur.right):
-                joueur_image = image_stand[position_image_stand//3]
+                joueur_image = image_stand[0]
                 position_image_stand = (position_image_stand + 1)%15
-
             else:
-                joueur_image = image_standL[position_image_stand//3]
+                joueur_image = image_standL[0]
                 position_image_stand = (position_image_stand + 1)%15
 
             #si bord droit ou gauche ne sont pas atteints
             if(collines.x - collines.vitesse > 0-2*ecran_largeur and collines.x + collines.vitesse < 0):
                 #si joueur à gauche du milieu de l'ecran
-                if(joueur.x + joueur_vitesse_x < ecran_milieu):
+                if(joueur.x_mort + joueur.largeur_mort + joueur_vitesse_x < ecran_milieu):
                     camera_avance_vers("droite")
 
                 #si joueur à droite du milieu de l'ecran
-                elif(joueur.x - joueur_vitesse_x > ecran_milieu):
+                elif(joueur.x_mort - joueur_vitesse_x > ecran_milieu):
                     camera_avance_vers("gauche")
 
 
@@ -540,37 +554,43 @@ while run:
             joueur.saut = True
             joueur.vitesse_y = Y_MAX
 
+        print("joueur_baisse = " + str(joueur_baisse))
+        print("joueur_tombe = " + str(joueur_tombe))
+        print("joueur.saut = " + str(joueur.saut))
+
         #se baisser
         if (keys[pygame.K_DOWN]):
             joueur_baisse = True
-            if(not joueur.saut and joueur.y == p1.y - 80):
-                joueur.hauteur = 40
-                joueur.y = p1.y - 40
+            if(not joueur.saut and joueur.y == p1.y - joueur_hauteur):
+                joueur.hauteur = joueur_hauteur/2
+                joueur.y = p1.y - joueur_hauteur/2
         else:
             joueur_baisse = False
-            joueur.hauteur = 80
-            if(not joueur.saut and joueur.y == p1.y - 40):
-                joueur.y = p1.y - 80
+            joueur.hauteur = joueur_hauteur
+            if(not joueur.saut and joueur.y == p1.y - joueur_hauteur/2):
+                joueur.y = p1.y - joueur_hauteur
 
         #animation coup
         if (keys[pygame.K_SPACE] and not joueur_baisse):
+
+            coup = True
 
             #images du joueur
             #joueur.largeur = joueur_largeur_coup
             if (joueur.left):
                 joueur_image = image_coup[position_image_coup]
                 position_image_coup = (position_image_coup + 1)%5
-                joueur.x -= 5
             else:
                 joueur_image = image_coupR[position_image_coup]
                 position_image_coup = (position_image_coup + 1)%5
-                joueur.x += 5
 
             #detruire ennemi
             for i in range(len(listeEnnemis)-1,-1,-1):
                 if(punch_collision(listeEnnemis[i].x,listeEnnemis[i].y,listeEnnemis[i].longueur,listeEnnemis[i].hauteur)):
                     del listeEnnemis[i]
                     del ennemis_vivants[0]
+        else:
+            coup = False
 
 
 
@@ -586,12 +606,10 @@ while run:
 
 
         joueur.actualiser()
+        #pygame.draw.rect(ecran, (0,255,0), (joueur.punch_hitbox))
+
 
         actualiser()
-
-        #pygame.draw.rect(ecran, (0,0,255), (joueur.hitbox))
-        pygame.draw.rect(ecran, (0,255,0), (joueur.punch_hitbox))
-
         p1.actualiser()
 
         for i in range (len(listeEnnemis)-1,-1,-1):
@@ -599,6 +617,7 @@ while run:
 
         for i in range (len(listeProjectiles)-1):
             listeProjectiles[i].actualiser()
+
 
         temps -= 10
 
